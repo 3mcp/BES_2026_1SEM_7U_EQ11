@@ -1,0 +1,26 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# Instalar Python
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.11'
+  displayName: 'Instalar Python'
+
+# Instalar dependências (selenium + pytest)
+- script: pip install -r requirements.txt
+  displayName: 'Instalar dependências'
+
+# Instalar o Google Chrome
+- script: |
+    wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo apt install -y ./google-chrome-stable_current_amd64.deb
+  displayName: 'Instalar Chrome'
+
+# Rodar os testes
+- script: pytest test_web.py --tb=short
+  displayName: 'Executar testes Selenium'
