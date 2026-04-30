@@ -1,140 +1,150 @@
-# 🏅 OlympycShare
+# OlympycShare
 
-> Rede social esportiva para criação e participação em eventos esportivos oficiais e não oficiais.
+Rede social esportiva para criar e participar de eventos esportivos
+oficiais e informais, manter um feed de publicacoes e organizar grupos
+por modalidade.
 
----
+## Descricao
 
-## 📋 Sobre o Projeto
+Este projeto foi desenvolvido como parte da disciplina de **DevOps**
+(Bacharelado em Engenharia de Software, PUCPR). A aplicacao tem como
+objetivo demonstrar um sistema funcional com tela de login, navegacao
+entre paginas, organizacao de codigo, versionamento, documentacao,
+testes automatizados e pipeline de Integracao Continua no Azure
+DevOps.
 
-O **OlympycShare** é uma plataforma que integra pessoas interessadas no meio esportivo, permitindo:
+## Funcionalidades
 
-- Criação e participação em eventos esportivos (oficiais e informais)
-- Feed de publicações com interações sociais
-- Sistema de amizades e grupos por esporte ou interesse
-- Agendamento e organização de eventos
+- Tela de login com autenticacao simulada e protecao de rotas
+- Feed social esportivo com publicacoes
+- Pagina de eventos com filtros por esporte e por tipo (oficial /
+  informal)
+- Pagina de grupos por modalidade
+- Pagina de perfil do usuario
+- Modal de criacao de evento
+- Logout e indicador do usuario logado no header
 
----
-
-## 🛠️ Tecnologias Utilizadas
-
-| Tecnologia | Descrição |
-|---|---|
-| [Next.js](https://nextjs.org/) | Framework React para produção |
-| [TypeScript](https://www.typescriptlang.org/) | Tipagem estática |
-| [Tailwind CSS](https://tailwindcss.com/) | Estilização utilitária |
-| [shadcn/ui](https://ui.shadcn.com/) | Componentes de interface |
-| [Azure DevOps](https://azure.microsoft.com/pt-br/products/devops) | Repositório, Boards e CI/CD |
-
----
-
-## 📁 Estrutura do Projeto
+## Login de Teste
 
 ```
-projeto-teste/
-├── app/                    # Páginas e layouts (App Router do Next.js)
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-├── components/             # Componentes reutilizáveis
-│   ├── sidebar.tsx
-│   ├── theme-provider.tsx
-│   └── ui/                 # Componentes shadcn/ui
-├── hooks/                  # Custom hooks React
-├── lib/                    # Utilitários e configurações
-├── public/                 # Arquivos estáticos
-├── styles/                 # Estilos globais
-├── next.config.mjs
-├── tailwind.config.ts
-├── tsconfig.json
-└── package.json
+E-mail: admin@email.com
+Senha:  123456
 ```
 
----
+A sessao e mantida em `localStorage`. Acessar qualquer rota protegida
+sem sessao redireciona para `/login`.
 
-## 🚀 Como Rodar Localmente
+## Tecnologias Utilizadas
 
-### Pré-requisitos
+- Next.js 16 (App Router) + React 19 + TypeScript
+- Tailwind CSS v4 + shadcn/ui (componentes acessiveis)
+- Vitest + Testing Library (testes unitarios)
+- Azure DevOps (repositorio Git, Boards e Pipelines)
 
-- [Node.js](https://nodejs.org/) v18 ou superior
-- [Git](https://git-scm.com/)
+## Como Executar o Projeto
+
+### Pre-requisitos
+
+- Node.js 20 ou superior
+- npm 10 ou superior
 
 ### Passo a passo
 
 ```bash
-# 1. Clone o repositório
-git clone <URL_DO_REPOSITORIO>
-cd projeto-teste
+# 1. Clone o repositorio
+git clone git@ssh.dev.azure.com:v3/pucpr-estudantes/BES_2026_1SEM_7U_EQ11/BES_2026_1SEM_7U_EQ11
+cd BES_2026_1SEM_7U_EQ11
 
-# 2. Instale as dependências
+# 2. Instale as dependencias
 npm install
 
-# 3. Rode o servidor de desenvolvimento
+# 3. Suba o servidor de desenvolvimento
 npm run dev
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000) no navegador.
+Acesse http://localhost:3000 — voce sera redirecionado para
+`/login`. Use as credenciais de demonstracao para entrar.
 
-### Scripts disponíveis
-
-```bash
-npm run dev       # Inicia o servidor de desenvolvimento
-npm run build     # Gera o build de produção
-npm run start     # Inicia o servidor em modo produção
-npm run lint      # Executa o linter
-```
-
----
-
-## 🌿 Fluxo de Branches (Git)
-
-```
-main
-└── feat/inicial     ← branch atual de desenvolvimento
-```
-
-> Sempre crie uma nova branch a partir de `main` para novas features:
+### Scripts disponiveis
 
 ```bash
-git checkout main
-git pull
-git checkout -b feat/nome-da-feature
+npm run dev     # servidor de desenvolvimento (Turbopack)
+npm run build   # build de producao
+npm run start   # servidor de producao
+npm test        # executa os testes Vitest uma vez
+npm run lint    # executa o ESLint
 ```
 
-### Convenção de commits
+## Estrutura do Projeto
 
 ```
-feat: nova funcionalidade
-fix: correção de bug
-chore: tarefas de configuração/build
-docs: atualização de documentação
-style: formatação/estilo de código
-refactor: refatoração sem mudança de comportamento
+.
+|-- app/                # Rotas (App Router): /, /login, /dashboard
+|   |-- login/          # Tela de login + testes
+|   `-- dashboard/      # Dashboard administrativo
+|-- components/         # Componentes de UI e features
+|   |-- auth-guard.tsx  # Protecao de rotas autenticadas
+|   `-- ui/             # Primitives shadcn/ui
+|-- lib/                # Helpers (auth, mock-data, utils) + testes
+|-- hooks/              # Custom hooks
+|-- public/             # Assets estaticos
+|-- selenium-teste/     # Testes E2E em Selenium (executado a parte)
+|-- azure-pipelines.yml # Pipeline CI: install -> test -> build
+|-- vitest.config.ts    # Configuracao do Vitest (jsdom + paths)
+`-- vitest.setup.ts     # Setup global dos testes
 ```
 
----
+## Pipeline de Integracao Continua
 
-## 📦 Entregas da Sprint (Azure DevOps)
+Toda mudanca empurrada para `master` e todo Pull Request direcionado
+a `master` disparam o pipeline definido em `azure-pipelines.yml`,
+que executa, em sequencia:
 
-Conforme orientação do professor, cada entrega deve conter:
+1. Instalacao do Node.js 20
+2. `npm ci` — instalacao reproduzivel das dependencias
+3. `npm test` — testes unitarios com Vitest
+4. `npm run build` — build de producao do Next.js
 
-- [x] Backlog estruturado no Azure Boards
-- [x] Sprint planejada
-- [x] Board com tasks em diferentes estados
-- [x] Link do repositório no Azure DevOps
-- [ ] Breve relatório (1 a 2 páginas) com:
-  - Como a equipe se organizou
-  - Dificuldades encontradas
-  - O que aprenderam com o uso das ferramentas
-  - Como dividiram as tarefas
+O status visual da execucao fica disponivel em `Pipelines` no Azure
+DevOps. O pipeline so e considerado verde quando todas as etapas
+passam.
 
----
+## Estrategia de Branches e Pull Requests
 
-## 👥 Equipe
+- `master` — branch principal, recebe somente codigo validado por
+  pipeline e revisao
+- `feature/*` — branches de feature criadas a partir de `master`,
+  integradas via Pull Request
 
-Projeto desenvolvido pela equipe **BES_2026_1SEM_7U_EQ11** — PUCPR.
+Padrao de mensagens (Conventional Commits):
 
----
+```
+feat:     nova funcionalidade
+fix:      correcao de bug
+test:     testes automatizados
+ci:       pipeline / build
+docs:     documentacao
+style:    formatacao, ajustes visuais
+chore:    tarefas de manutencao
+refactor: refatoracao sem mudanca de comportamento
+```
 
-## 📄 Licença
+## Objetivo Academico
 
-Este projeto é de uso acadêmico e não possui licença para distribuição comercial.
+A entrega demonstra a aplicacao de praticas de DevOps:
+
+- Versionamento e estrategia de branches no Azure Repos
+- Trabalho organizado no Azure Boards (User Stories e Features)
+- Pull Request como ponto de revisao e integracao
+- Pipeline CI com build e testes automatizados
+- Documentacao da execucao e do design do projeto
+
+## Equipe
+
+Projeto desenvolvido pela equipe **BES_2026_1SEM_7U_EQ11** —
+Bacharelado em Engenharia de Software, PUCPR. A autoria de cada
+contribuicao fica registrada no historico do repositorio.
+
+## Status
+
+Em finalizacao para entrega academica.
