@@ -1,21 +1,34 @@
-# Node.js with React
-# Build a Node.js project that uses React.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+# Pipeline CI do projeto OlympycShare (Next.js + React + Vitest)
+# Executa instalacao, testes unitarios e build em todo push para master
+# e em todo Pull Request direcionado a master.
 
 trigger:
-- master
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    include:
+      - master
 
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  NODE_VERSION: '20.x'
+
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
+    versionSpec: $(NODE_VERSION)
+  displayName: 'Install Node.js $(NODE_VERSION)'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+- script: npm ci
+  displayName: 'Install dependencies (npm ci)'
+
+- script: npm test
+  displayName: 'Run unit tests (Vitest)'
+
+- script: npm run build
+  displayName: 'Build production bundle (next build)'
