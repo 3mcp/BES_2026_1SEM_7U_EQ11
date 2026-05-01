@@ -8,9 +8,25 @@ __v0_jsx-dev-runtime.ts
 next.user-config.*
 
 # Environment variables
+.env
+.env.local
 .env*.local
 
-# Common ignores
+# Node / Next.js
 node_modules/
 .next/
+*.tsbuildinfo
+
+# Test artifacts
+coverage/
+.vitest-cache/
+
+# Python (selenium-teste)
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Editor / OS
 .DS_Store
+Thumbs.db
+*.log
