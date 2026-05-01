@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AuthGuard } from "@/components/auth-guard";
 import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 import { MobileNav } from "@/components/mobile-nav";
@@ -38,27 +39,25 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <Sidebar currentPage={currentPage} onNavigate={handleNavigate} />
-      <MobileNav currentPage={currentPage} onNavigate={handleNavigate} />
+    <AuthGuard>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <Sidebar currentPage={currentPage} onNavigate={handleNavigate} />
+        <MobileNav currentPage={currentPage} onNavigate={handleNavigate} />
 
-      {/* Right Sidebar - only show on feed */}
-      {currentPage === "feed" && <RightSidebar onNavigate={handleNavigate} />}
+        {currentPage === "feed" && <RightSidebar onNavigate={handleNavigate} />}
 
-      {/* Main Content */}
-      <main className="pt-16 pb-20 lg:pb-0 lg:pl-64 xl:pr-80">
-        <div className="max-w-2xl mx-auto p-4 lg:p-6">{renderPage()}</div>
-      </main>
+        <main className="pt-16 pb-20 lg:pb-0 lg:pl-64 xl:pr-80">
+          <div className="max-w-2xl mx-auto p-4 lg:p-6">{renderPage()}</div>
+        </main>
 
-      {/* FAB */}
-      <FAB onClick={() => setIsModalOpen(true)} />
+        <FAB onClick={() => setIsModalOpen(true)} />
 
-      {/* Create Event Modal */}
-      <CreateEventModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </div>
+        <CreateEventModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      </div>
+    </AuthGuard>
   );
 }
